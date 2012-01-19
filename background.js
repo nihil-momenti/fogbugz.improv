@@ -1,12 +1,12 @@
-function loadInjectedCSS(event, path) {
+function loadInjectedFile(event, path) {
     var req = new XMLHttpRequest();
     req.open('GET', path, false);
     req.send();
 
     event.source.postMessage({
-        topic: 'LoadedInjectedCSS',
+        topic: 'LoadedInjectedFile',
         data: {
-            css: req.responseText,
+            content: req.responseText,
             path: path
         }
     });
@@ -14,9 +14,9 @@ function loadInjectedCSS(event, path) {
 
 function onMessage(event) {
     var message = event.data;
-    if (message.topic === 'LoadInjectedCSS') {
+    if (message.topic === 'LoadInjectedFile') {
         var path = message.data;
-        loadInjectedCSS(event, path);
+        loadInjectedFile(event, path);
     }
 }
 

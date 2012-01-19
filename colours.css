@@ -140,20 +140,17 @@ td.wysSymbol
 
 #bugviewContainer .top .plugins.view label
 {
-    color:#262626;
     background-color:#E9E9E9;
     border-left-color:#C0C0C0;
     border-top-color:#C0C0C0;
 }
 
-#bugviewContainer .side .label
-{
-    color:#262626;
-}
-
+#bugviewContainer .top .plugins.view label,
+#bugviewContainer .side .label,
 #bugviewContainer .side label
 {
-    color:#262626;
+    /*color:#262626;*/
+    color:#93a1a1;
 }
 
 #bugviewContainer .bugevents .bugevent.detailed,
@@ -205,7 +202,8 @@ td.wysSymbol
 #bugviewContainer .bugevents .bugevent .changes .action,
 #bugviewContainer .bugevents .pseudobugevent .changes .action
 {
-    text-shadow:0 1px rgba(255, 255, 255, 0.5);
+    /*text-shadow:0 1px rgba(255, 255, 255, 0.5);*/
+    text-shadow:none;
 }
 
 #bugviewContainer .bugevents .bugevent .date,
@@ -2008,15 +2006,43 @@ div.emailBody,
 div.droplistSurround,
 div.caseIdPopup,
 div.caseListCategoryPopup,
-a.chunk.hover
+a.chunk.hover,
 a.chunk.invalid.hover
 {
     /*background-color:white;*/
     background-color:#002b36;
 }
 
+body,
+#www-fogcreek-com-fogbugz
+{
+    background-image:none;
+}
 
 
 
+#bugviewContainer .bugevents .pseudobugevent.detailed.kiln { 
+    /*background-color: rgb(224, 241, 223);*/
+    border-bottom-color: rgb(204, 204, 204);
+    border-left-color: rgb(204, 204, 204);
+    border-right-color: rgb(204, 204, 204);
+    border-top-color: rgb(204, 204, 204);
+    box-shadow: inset 1px 1px rgb(255, 255, 255);
+    background-color:#859900;
+}
 
 
+.pseudobugevent.kiln .tags { 
+    /*color: rgb(104, 97, 94);*/
+    color:#657b83;
+}
+
+.contentWikiView code.inline-codesnippet, .bugevent code.inline-codesnippet, #codereview code.inline-codesnippet { 
+    /*border-bottom-color: rgba(192, 192, 192, 0.5059);
+    border-left-color: rgba(192, 192, 192, 0.5059);
+    border-right-color: rgba(192, 192, 192, 0.5059);
+    border-top-color: rgba(192, 192, 192, 0.5059);*/
+    border-color:#eee8d5;
+    background-color:#fdf6e3;
+    color:#657b83;
+}

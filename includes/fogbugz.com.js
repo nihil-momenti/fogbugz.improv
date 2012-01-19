@@ -22,20 +22,77 @@ window.addEventListener('DOMContentLoaded', function() {
         var injectCSS = function(path) {
             var onCSS = function(event) {
                 var message = event.data;
-                if (message.topic === 'LoadedInjectedCSS' && message.data.path === path) {
+                if (message.topic === 'LoadedInjectedFile' && message.data.path === path) {
                     opera.extension.removeEventListener('message', onCSS, false);
 
-                    var css = message.data.css;
-                    var style = document.createElement('style');
-                    style.setAttribute('type', 'text/css');
-                    style.appendChild(document.createTextNode(css));
-                    document.getElementsByTagName('head')[0].appendChild(style);
+                    var css = message.data.content;
+                    $('head').append($('<style type="text/css">').text(css));
                 }
             }
 
             opera.extension.addEventListener('message', onCSS, false);
             opera.extension.postMessage({
-                topic: 'LoadInjectedCSS',
+                topic: 'LoadInjectedFile',
+                data: path
+            });
+        }
+
+        var swapLightbulb = function() {
+            var path = 'lightbulb.svg'
+
+            var onLightBulb = function(event) {
+                var message = event.data;
+                if (message.topic === 'LoadedInjectedFile' && message.data.path === path) {
+                    opera.extension.removeEventListener('message', onLightBulb, false);
+
+                    var svg = message.data.content;
+                    $('img[title="Feature"]').replaceWith(svg);
+                }
+            }
+
+            opera.extension.addEventListener('message', onLightBulb, false);
+            opera.extension.postMessage({
+                topic: 'LoadInjectedFile',
+                data: path
+            });
+        }
+
+        var swapBug = function() {
+            var path = 'bug.svg'
+
+            var onBug = function(event) {
+                var message = event.data;
+                if (message.topic === 'LoadedInjectedFile' && message.data.path === path) {
+                    opera.extension.removeEventListener('message', onBug, false);
+
+                    var svg = message.data.content;
+                    $('img[title="Bug"]').replaceWith(svg);
+                }
+            }
+
+            opera.extension.addEventListener('message', onBug, false);
+            opera.extension.postMessage({
+                topic: 'LoadInjectedFile',
+                data: path
+            });
+        }
+
+        var swapWatch = function() {
+            var path = 'watch.svg'
+
+            var onWatch = function(event) {
+                var message = event.data;
+                if (message.topic === 'LoadedInjectedFile' && message.data.path === path) {
+                    opera.extension.removeEventListener('message', onWatch, false);
+
+                    var svg = message.data.content;
+                    $('img[title="Schedule Item"]').replaceWith(svg);
+                }
+            }
+
+            opera.extension.addEventListener('message', onWatch, false);
+            opera.extension.postMessage({
+                topic: 'LoadInjectedFile',
                 data: path
             });
         }
@@ -81,11 +138,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 .remove()
         }
 
-        var addMyToolbar = function() {
-            var myToolbar = $('<div class="content"><span>Testing</span></div>');
-            $('.bugFields .idTitleProjectAndArea').append(myToolbar);
-        }
-
         var colouriseStatusCol = function() {
             // Original authors: Tyler Hicks-Wright & Dane Bertram
             // Stolen from http://fogbugz.stackexchange.com/questions/8229/
@@ -98,12 +150,12 @@ window.addEventListener('DOMContentLoaded', function() {
                         var td = span.parent().parent().parent();
                         td.css( { textAlign: 'center' } );
                         span.attr({title: status}).css({fontWeight: 'bold', textAlign: 'center'});
-                        if      (status.match(new RegExp('(Active|' + FB_ACTIVE + ').*')))    { span.text('A').css( { color: '#859900' } ); }
-                        else if (status.match(new RegExp('(Resolved|' + FB_RESOLVE + ').*'))) { span.text('R').css( { color: '#d75f00' } ); }
-                        else if (status.match(new RegExp('(Closed|' + FB_CLOSED + ').*')))    { span.text('C').css( { color: '#dc322f' } ); }
-                        else if (status.match(/Verified.*/))                                  { span.text('V').css( { color: '#268bd2' } ); }
-                        else if (status.match(/Approved.*/))                                  { span.text('+').css( { color: '#859900' } ); }
-                        else if (status.match(/Rejected.*/))                                  { span.text('-').css( { color: '#dc322f' } ); }
+                        if      (status.match(new RegExp('(Active|' + FB_ACTIVE + ').*')))    { span.text('A').css( { 'font-size': '14px', color: '#859900' } ); }
+                        else if (status.match(new RegExp('(Resolved|' + FB_RESOLVE + ').*'))) { span.text('R').css( { 'font-size': '14px', color: '#d75f00' } ); }
+                        else if (status.match(new RegExp('(Closed|' + FB_CLOSED + ').*')))    { span.text('C').css( { 'font-size': '14px', color: '#dc322f' } ); }
+                        else if (status.match(/Verified.*/))                                  { span.text('V').css( { 'font-size': '14px', color: '#268bd2' } ); }
+                        else if (status.match(/Approved.*/))                                  { span.text('+').css( { 'font-size': '14px', color: '#859900' } ); }
+                        else if (status.match(/Rejected.*/))                                  { span.text('-').css( { 'font-size': '14px', color: '#dc322f' } ); }
                     } else {
                         var a = $(e).find('a:first');
                         a.text('?').css({textAlign: 'center'});
@@ -151,10 +203,10 @@ window.addEventListener('DOMContentLoaded', function() {
                         var assigned_to = span.text();
                         var td = span.parent().parent().parent();
                         td.css({textAlign: 'center'});
-                        if      (assigned_to.match(/Ticket Default Owner/)) { span.children(0).css( { color: '#586e75' } ); }
-                        else if (assigned_to.match(/QA Queue/))             { span.children(0).css( { color: '#b58900' } ); }
-                        else if (assigned_to.match(/CLOSED/))               { span.children(0).css( { color: '#dc322f' } ); }
-                        else if (assigned_to.match(/Wim Looman/))           { span.children(0).css( { color: '#859900' } ); }
+                        if      (assigned_to.match(/Ticket Default Owner/)) { span.children(0).css( { color: '#859900' } ); }
+                        else if (assigned_to.match(/QA Queue/))             { span.children(0).css( { color: '#586e75' } ); }
+                        else if (assigned_to.match(/CLOSED/))               { span.children(0).css( { color: '#586e75' } ); }
+                        else if (assigned_to.match(/Wim Looman/))           { span.children(0).css( { color: '#dc322f' } ); }
                     }
                 });
             }
@@ -167,10 +219,12 @@ window.addEventListener('DOMContentLoaded', function() {
         highlightMe();
         addMeButton();
         window.addEventListener('DOMNodeInserted', filterReviewers, false);
-        addMyToolbar();
         colouriseStatusCol();
         colourisePriorityCol();
         colouriseAssignedToCol();
+        swapLightbulb();
+        swapBug();
+        swapWatch();
         insertLogo();
 
         window.opera.postError("FogBugz improved");
