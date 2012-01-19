@@ -98,12 +98,12 @@ window.addEventListener('DOMContentLoaded', function() {
                         var td = span.parent().parent().parent();
                         td.css( { textAlign: 'center' } );
                         span.attr({title: status}).css({fontWeight: 'bold', textAlign: 'center'});
-                        if      (status.match(new RegExp('(Active|' + FB_ACTIVE + ').*')))    { span.text('A').css( { color: '#859900' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (status.match(new RegExp('(Resolved|' + FB_RESOLVE + ').*'))) { span.text('R').css( { color: '#b58900' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (status.match(new RegExp('(Closed|' + FB_CLOSED + ').*')))    { span.text('C').css( { color: '#dc322f' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (status.match(/Verified.*/))                                  { span.text('V').css( { color: '#268bd2' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (status.match(/Approved.*/))                                  { span.text('+').css( { color: '#859900' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (status.match(/Rejected.*/))                                  { span.text('-').css( { color: '#dc322f' } ); td.css( { backgroundColor: '#002b36' } ); }
+                        if      (status.match(new RegExp('(Active|' + FB_ACTIVE + ').*')))    { span.text('A').css( { color: '#859900' } ); }
+                        else if (status.match(new RegExp('(Resolved|' + FB_RESOLVE + ').*'))) { span.text('R').css( { color: '#d75f00' } ); }
+                        else if (status.match(new RegExp('(Closed|' + FB_CLOSED + ').*')))    { span.text('C').css( { color: '#dc322f' } ); }
+                        else if (status.match(/Verified.*/))                                  { span.text('V').css( { color: '#268bd2' } ); }
+                        else if (status.match(/Approved.*/))                                  { span.text('+').css( { color: '#859900' } ); }
+                        else if (status.match(/Rejected.*/))                                  { span.text('-').css( { color: '#dc322f' } ); }
                     } else {
                         var a = $(e).find('a:first');
                         a.text('?').css({textAlign: 'center'});
@@ -124,16 +124,16 @@ window.addEventListener('DOMContentLoaded', function() {
                         var td = span.parent().parent().parent();
                         td.css({textAlign: 'center'});
                         span.attr({title: priority}).css({fontWeight: 'bold', textAlign: 'center'});
-                        if      (priority.match(/1[^\d]*/)) { span.text('1').css( { color: '#e61717' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/2[^\d]*/)) { span.text('2').css( { color: '#e66717' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/3[^\d]*/)) { span.text('3').css( { color: '#e6b817' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/4[^\d]*/)) { span.html('4').css( { color: '#c3e617' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/5[^\d]*/)) { span.html('5').css( { color: '#72e617' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/6[^\d]*/)) { span.html('6').css( { color: '#21e617' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/7[^\d]*/)) { span.html('7').css( { color: '#17e65d' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/8[^\d]*/)) { span.html('8').css( { color: '#17e6ae' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/9[^\d]*/)) { span.html('9').css( { color: '#17cde6' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (priority.match(/\d+/))     { span.html('*').css( { color: '#177ce6' } ); td.css( { backgroundColor: '#002b36' } ); }
+                        if      (priority.match(/1[^\d]*/)) { span.text('1').css( { color: '#e61717' } ); }
+                        else if (priority.match(/2[^\d]*/)) { span.text('2').css( { color: '#e66717' } ); }
+                        else if (priority.match(/3[^\d]*/)) { span.text('3').css( { color: '#e6b817' } ); }
+                        else if (priority.match(/4[^\d]*/)) { span.html('4').css( { color: '#c3e617' } ); }
+                        else if (priority.match(/5[^\d]*/)) { span.html('5').css( { color: '#72e617' } ); }
+                        else if (priority.match(/6[^\d]*/)) { span.html('6').css( { color: '#21e617' } ); }
+                        else if (priority.match(/7[^\d]*/)) { span.html('7').css( { color: '#17e65d' } ); }
+                        else if (priority.match(/8[^\d]*/)) { span.html('8').css( { color: '#17e6ae' } ); }
+                        else if (priority.match(/9[^\d]*/)) { span.html('9').css( { color: '#17cde6' } ); }
+                        else if (priority.match(/\d+/))     { span.html('*').css( { color: '#177ce6' } ); }
                     } else {
                         var a = $(e).find('a:first');
                         a.html('&nbsp;!').css({textAlign: 'center'});
@@ -151,10 +151,10 @@ window.addEventListener('DOMContentLoaded', function() {
                         var assigned_to = span.text();
                         var td = span.parent().parent().parent();
                         td.css({textAlign: 'center'});
-                        if      (assigned_to.match(/Ticket Default Owner/)) { span.children(0).css( { color: '#002b36' } );                                      }
-                        else if (assigned_to.match(/QA Queue/))             { span.children(0).css( { color: '#b58900' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (assigned_to.match(/CLOSED/))               { span.children(0).css( { color: '#dc322f' } ); td.css( { backgroundColor: '#002b36' } ); }
-                        else if (assigned_to.match(/Wim Looman/))           { span.children(0).css( { color: '#859900' } ); td.css( { backgroundColor: '#002b36' } ); }
+                        if      (assigned_to.match(/Ticket Default Owner/)) { span.children(0).css( { color: '#586e75' } ); }
+                        else if (assigned_to.match(/QA Queue/))             { span.children(0).css( { color: '#b58900' } ); }
+                        else if (assigned_to.match(/CLOSED/))               { span.children(0).css( { color: '#dc322f' } ); }
+                        else if (assigned_to.match(/Wim Looman/))           { span.children(0).css( { color: '#859900' } ); }
                     }
                 });
             }
