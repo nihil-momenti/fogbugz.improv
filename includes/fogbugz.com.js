@@ -46,7 +46,9 @@ window.addEventListener('DOMContentLoaded', function() {
                     opera.extension.removeEventListener('message', onLightBulb, false);
 
                     var svg = message.data.content;
-                    $('img[title="Feature"]').replaceWith(svg);
+                    var div = $('.catIcon[title="Feature"]').parent().parent();
+                    $('.catIcon[title="Feature"]').parent().replaceWith(svg);
+                    div.addClass('catIcon').attr('title', 'Feature');
                 }
             }
 
@@ -66,7 +68,9 @@ window.addEventListener('DOMContentLoaded', function() {
                     opera.extension.removeEventListener('message', onBug, false);
 
                     var svg = message.data.content;
-                    $('img[title="Bug"]').replaceWith(svg);
+                    var div = $('.catIcon[title="Bug"]').parent().parent();
+                    $('.catIcon[title="Bug"]').parent().replaceWith(svg);
+                    div.addClass('catIcon').attr('title', 'Bug');
                 }
             }
 
@@ -86,7 +90,9 @@ window.addEventListener('DOMContentLoaded', function() {
                     opera.extension.removeEventListener('message', onWatch, false);
 
                     var svg = message.data.content;
-                    $('img[title="Schedule Item"]').replaceWith(svg);
+                    var div = $('.catIcon[title="Schedule Item"]').parent().parent();
+                    $('.catIcon[title="Schedule Item"]').parent().replaceWith(svg);
+                    div.addClass('catIcon').attr('title', 'Schedule Item');
                 }
             }
 
@@ -150,12 +156,15 @@ window.addEventListener('DOMContentLoaded', function() {
                         var td = span.parent().parent().parent();
                         td.css( { textAlign: 'center' } );
                         span.attr({title: status}).css({fontWeight: 'bold', textAlign: 'center'});
-                        if      (status.match(new RegExp('(Active|' + FB_ACTIVE + ').*')))    { span.text('A').css( { 'font-size': '14px', color: '#859900' } ); }
-                        else if (status.match(new RegExp('(Resolved|' + FB_RESOLVE + ').*'))) { span.text('R').css( { 'font-size': '14px', color: '#d75f00' } ); }
-                        else if (status.match(new RegExp('(Closed|' + FB_CLOSED + ').*')))    { span.text('C').css( { 'font-size': '14px', color: '#dc322f' } ); }
-                        else if (status.match(/Verified.*/))                                  { span.text('V').css( { 'font-size': '14px', color: '#268bd2' } ); }
-                        else if (status.match(/Approved.*/))                                  { span.text('+').css( { 'font-size': '14px', color: '#859900' } ); }
-                        else if (status.match(/Rejected.*/))                                  { span.text('-').css( { 'font-size': '14px', color: '#dc322f' } ); }
+                        if      (status.match(/Active \(Pending Code Review\)/)) { span.text('A').css( { 'font-size': '14px', color: '#d75f00' } ); }
+                        else if (status.match(/Active \(Blocked\)/))             { span.text('A').css( { 'font-size': '14px', color: '#dc322f' } ); }
+                        else if (status.match(/Active/))                         { span.text('A').css( { 'font-size': '14px', color: '#859900' } ); }
+                        else if (status.match(/Resolved \(In Test\)/))           { span.text('R').css( { 'font-size': '14px', color: '#b58900' } ); }
+                        else if (status.match(/Resolved/))                       { span.text('R').css( { 'font-size': '14px', color: '#d75f00' } ); }
+                        else if (status.match(/Closed/))                         { span.text('C').css( { 'font-size': '14px', color: '#dc322f' } ); }
+                        else if (status.match(/Verified/))                       { span.text('V').css( { 'font-size': '14px', color: '#268bd2' } ); }
+                        else if (status.match(/Approved/))                       { span.text('+').css( { 'font-size': '14px', color: '#859900' } ); }
+                        else if (status.match(/Rejected/))                       { span.text('-').css( { 'font-size': '14px', color: '#dc322f' } ); }
                     } else {
                         var a = $(e).find('a:first');
                         a.text('?').css({textAlign: 'center'});
@@ -212,6 +221,32 @@ window.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        var insertResolveInTestButton = function() {
+            var resolveButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li:has("a.resolve")');
+            var path = resolveButton.children('a.resolve').attr('href');
+            var category = $('catIcon').attr('title');
+            var statusCode = 0;
+            if      (category.match(/Feature/)) { statusCode = 33; }
+            else if (category.match(/Bug/))     { statusCode = 32; }
+            else                                { return;          }
+            var resolveInTestButton = $('<li>' +
+                                            '<a class="actionButton2 icon-left resolve-in-test" href="' + path + '&ixStatus=' + statusCode + '">' +
+                                                'Resolve (In Test)' +
+                                            '</a>' +
+                                        '</li>');
+
+            resolveInTestButton.insertBefore(resolveButton);
+        }
+
+        var forceResolveStatuses = function() {
+            var resolveButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li a.resolve');
+            var statusCode = 0;
+            if      (category.match(/Feature/)) { statusCode = 8; }
+            else if (category.match(/Bug/))     { statusCode = 2; }
+            else                                { return;          }
+            resolveButton.attr('href', resolveButton.attr('href') + '&ixStatus=' + statusCode);
+        }
+
         $.fn.reverse = [].reverse;
 
         injectCSS('colours.css');
@@ -225,6 +260,8 @@ window.addEventListener('DOMContentLoaded', function() {
         swapLightbulb();
         swapBug();
         swapWatch();
+        insertResolveInTestButton();
+        forceResolveStatuses();
         insertLogo();
 
         window.opera.postError("FogBugz improved");
