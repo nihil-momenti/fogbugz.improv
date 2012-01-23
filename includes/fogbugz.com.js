@@ -8,8 +8,9 @@ window.addEventListener('DOMContentLoaded', function() {
         // need to set them myself since I'm running ``outside the system.''
         var FB_STATUS = "Status";
         var FB_ACTIVE = "Active";
-        var FB_RESOLVE = "Resolved";
         var FB_CLOSED = "Closed";
+        var FB_RESOLVE = "Resolved";
+        var FB_BACKLOG = "Backlog";
         var FB_PRIORITY = "Priority";
         var FB_ASSIGNED_TO = "Assigned To";
 
@@ -188,16 +189,44 @@ window.addEventListener('DOMContentLoaded', function() {
                         if      (priority.match(/1[^\d]*/)) { span.text('1').css( { color: '#e61717' } ); }
                         else if (priority.match(/2[^\d]*/)) { span.text('2').css( { color: '#e66717' } ); }
                         else if (priority.match(/3[^\d]*/)) { span.text('3').css( { color: '#e6b817' } ); }
-                        else if (priority.match(/4[^\d]*/)) { span.html('4').css( { color: '#c3e617' } ); }
-                        else if (priority.match(/5[^\d]*/)) { span.html('5').css( { color: '#72e617' } ); }
-                        else if (priority.match(/6[^\d]*/)) { span.html('6').css( { color: '#21e617' } ); }
-                        else if (priority.match(/7[^\d]*/)) { span.html('7').css( { color: '#17e65d' } ); }
-                        else if (priority.match(/8[^\d]*/)) { span.html('8').css( { color: '#17e6ae' } ); }
-                        else if (priority.match(/9[^\d]*/)) { span.html('9').css( { color: '#17cde6' } ); }
-                        else if (priority.match(/\d+/))     { span.html('*').css( { color: '#177ce6' } ); }
+                        else if (priority.match(/4[^\d]*/)) { span.text('4').css( { color: '#c3e617' } ); }
+                        else if (priority.match(/5[^\d]*/)) { span.text('5').css( { color: '#72e617' } ); }
+                        else if (priority.match(/6[^\d]*/)) { span.text('6').css( { color: '#21e617' } ); }
+                        else if (priority.match(/7[^\d]*/)) { span.text('7').css( { color: '#17e65d' } ); }
+                        else if (priority.match(/8[^\d]*/)) { span.text('8').css( { color: '#17e6ae' } ); }
+                        else if (priority.match(/9[^\d]*/)) { span.text('9').css( { color: '#17cde6' } ); }
+                        else if (priority.match(/\d+/))     { span.text('*').css( { color: '#177ce6' } ); }
                     } else {
                         var a = $(e).find('a:first');
                         a.html('&nbsp;!').css({textAlign: 'center'});
+                    }
+                });
+            }
+        }
+
+        var colouriseBacklogCol = function() {
+            var col;
+            if ((col = getCol(FB_BACKLOG)) && true) {
+                $('.' + col).each(function(i, e) {
+                    var link = $(e).find('span.projectBacklogBacklog a');
+                    if (link.length > 0) {
+                        var backlog = link.text();
+                        var td = link.parent().parent().parent().parent().parent().parent();
+                        td.css({textAlign: 'center'});
+                        link.attr({title: backlog}).css({fontWeight: 'bold', textAlign: 'center'});
+                        if      (backlog.match(/1[^\d]*/)) { link.text('1').css( { color: '#e61717' } ); }
+                        else if (backlog.match(/2[^\d]*/)) { link.text('2').css( { color: '#e66717' } ); }
+                        else if (backlog.match(/3[^\d]*/)) { link.text('3').css( { color: '#e6b817' } ); }
+                        else if (backlog.match(/4[^\d]*/)) { link.text('4').css( { color: '#c3e617' } ); }
+                        else if (backlog.match(/5[^\d]*/)) { link.text('5').css( { color: '#72e617' } ); }
+                        else if (backlog.match(/6[^\d]*/)) { link.text('6').css( { color: '#21e617' } ); }
+                        else if (backlog.match(/7[^\d]*/)) { link.text('7').css( { color: '#17e65d' } ); }
+                        else if (backlog.match(/8[^\d]*/)) { link.text('8').css( { color: '#17e6ae' } ); }
+                        else if (backlog.match(/9[^\d]*/)) { link.text('9').css( { color: '#17cde6' } ); }
+                        else if (backlog.match(/\d+/))     { link.text('*').css( { color: '#177ce6' } ); }
+                    } else {
+                        var a = $(e).find('a:first');
+                        a.html('&nbsp;&#x203D;').css({textAlign: 'center'});
                     }
                 });
             }
@@ -224,13 +253,14 @@ window.addEventListener('DOMContentLoaded', function() {
         var insertResolveInTestButton = function() {
             var resolveButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li:has("a.resolve")');
             var path = resolveButton.children('a.resolve').attr('href');
-            var category = $('catIcon').attr('title');
+            var category = $('.catIcon').attr('title');
             var statusCode = 0;
-            if      (category.match(/Feature/)) { statusCode = 33; }
+            if      (category == undefined)     { return;          }
+            else if (category.match(/Feature/)) { statusCode = 33; }
             else if (category.match(/Bug/))     { statusCode = 32; }
             else                                { return;          }
             var resolveInTestButton = $('<li>' +
-                                            '<a class="actionButton2 icon-left resolve-in-test" href="' + path + '&ixStatus=' + statusCode + '">' +
+                                            '<a class="actionButton2 resolve-in-test" href="' + path + '&ixStatus=' + statusCode + '">' +
                                                 'Resolve (In Test)' +
                                             '</a>' +
                                         '</li>');
@@ -240,10 +270,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var forceResolveStatuses = function() {
             var resolveButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li a.resolve');
+            var category = $('.catIcon').attr('title');
             var statusCode = 0;
-            if      (category.match(/Feature/)) { statusCode = 8; }
+            if      (category == undefined)     { return;         }
+            else if (category.match(/Feature/)) { statusCode = 8; }
             else if (category.match(/Bug/))     { statusCode = 2; }
-            else                                { return;          }
+            else                                { return;         }
             resolveButton.attr('href', resolveButton.attr('href') + '&ixStatus=' + statusCode);
         }
 
@@ -256,6 +288,7 @@ window.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('DOMNodeInserted', filterReviewers, false);
         colouriseStatusCol();
         colourisePriorityCol();
+        colouriseBacklogCol();
         colouriseAssignedToCol();
         swapLightbulb();
         swapBug();

@@ -339,16 +339,23 @@ a.uvd:visited
 .smalllist th,
 .mini-table th
 {
-    background-color:#efefef;
-    border-bottom-color:#ccc;
+    /*background-color:#efefef;
+    border-bottom-color:#ccc;*/
+    background-color:#fdf6e3;
+    border-bottom-color:#eee8d5;
 }
 
+.bugList .bugs th a,
 .bugList .bugs th a:visited,
+.biglist th a,
 .biglist th a:visited,
+.smallist th a,
 .smallist th a:visited,
+.mini-table th a
 .mini-table th a:visited
 {
-    color:#39668e;
+    /*color:#39668e;*/
+    color:#cb4b16;
 }
 
 .bugList .bugs th a.dotted:visited,
@@ -372,7 +379,7 @@ a.uvd:visited
     /*color:#666;
     border-top-color:#d6d6d6;*/
     color:#586e75;
-    border-top-color:#073642;
+    border-top-color:#586e75;
 }
 
 #mainArea .bugList .bugs td.rCB,
@@ -381,14 +388,14 @@ a.uvd:visited
 .biglist td.L
 {
     /*border-left-color:#d6d6d6;*/
-    border-left-color:#073642;
+    border-left-color:#586e75;
 }
 
 .biglist th.R,
 .biglist td.R
 {
     /*border-right-color:#d6d6d6;*/
-    border-right-color:#073642;
+    border-right-color:#586e75;
 }
 
 .disabled
@@ -530,13 +537,13 @@ td.g-r-left,
 .g-r-pending td
 {
     /*border-left-color:#d6d6d6;*/
-    border-left-color:#073642;
+    border-left-color:#586e75;
 }
 
 .g-r-pending td
 {
     /*border-right-color:#d6d6d6;*/
-    border-right-color:#073642;
+    border-right-color:#586e75;
 }
 
 .n-b td
@@ -565,7 +572,7 @@ td.g-r-left,
 #r-s
 {
     /*border-right-color:#d6d6d6;*/
-    border-right-color:#073642;
+    border-right-color:#586e75;
 }
 
 span.status
@@ -1345,7 +1352,8 @@ a:link,
 a.novisited:visited,
 #mainArea a.novisited:visited
 {
-    color:#39668e;
+    /*color:#39668e;*/
+    color:#268bd2;
 }
 
 a.dotted,
@@ -1555,10 +1563,22 @@ div.kilnInfo
 
 #listHeader
 {
-    background-color:#efefef;
+    /*background-color:#efefef;
     border-color:#DDD #DDD #AEAEAE;
     box-shadow:0px 1px 1px #ccc;
-    *border-color:#CCC;
+    *border-color:#CCC;*/
+    background-color:#073642;
+    border-color:#586e75;
+    box-shadow:0px 1px 1px #073642;
+
+}
+
+#viewSelector div.dropdownHolder
+{
+    /*border-color:#CCC;
+    box-shadow:1px 1px 0 #fff;*/
+    border-color:#586e75;
+    box-shadow:0px 1px 1px #002b36;
 }
 
 #listName a,
@@ -1568,25 +1588,27 @@ div.kilnInfo
 #listTitle a:link,
 #listTitle a:visited
 {
-    border-bottom-color:#000;
+    /*color:#000;
+    border-bottom-color:#000;*/
+    color:#859900;
+    border-bottom-color:#859900;
 }
 
 #listHeader #listTitle span.further,
-#listHeader #listTitle span.further a
+#listHeader #listTitle span.further a,
+#listHeader #listTitle span.further a .dotted
 {
-    color:#888;
-    text-shadow:1px 1px 0 #fff;
-}
-
-#viewSelector div.dropdownHolder
-{
-    border-color:#CCC;
-    box-shadow:1px 1px 0 #fff;
+    /*color:#888;
+    text-shadow:1px 1px 0 #fff;*/
+    color:#586e75;
+    text-shadow:none;
+    border-color:#586e75;
 }
 
 div.viewMoreOptions a
 {
-    color:#39668e;
+    /*color:#39668e;*/
+    color:#268bd2;
 }
 
 .faded
@@ -1945,12 +1967,6 @@ input.wikiHeadlineEditable,
 #listName,
 #listTitle,
 #listHeader #listTitle span.further a:hover,
-#listName a,
-#listName a:link,
-#listName a:visited,
-#listTitle a,
-#listTitle a:link,
-#listTitle a:visited,
 h1.wiki,
 h1.discuss,
 p.discuss,
