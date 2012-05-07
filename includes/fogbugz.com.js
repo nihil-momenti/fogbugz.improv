@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', function() {
         var FB_PRIORITY = "Priority";
         var FB_ASSIGNED_TO = "Assigned To";
 
+        var MY_ID = '197';
+
         var getCol = function(col) {
             var hs = $('th.c-h a:contains("' + col + '")');
             if(hs.length == 0) return null;
@@ -121,15 +123,6 @@ window.addEventListener('DOMContentLoaded', function() {
             me.css('background-color', '#dc322f');
         }
 
-        var addMeButton = function() {
-            var me = $('#ixPersonAssignedTo > option:contains(Wim Looman)');
-
-            var meButton = $('<span>Select Me</span>');
-            $('label[for=ixPersonAssignedTo]').after(meButton);
-            meButton.css('background-color', '#859900').css('padding', '0px 5px 0px 5px').css('border', '2px groove #dc322f').css('font-size', '10px');
-            meButton.click(function() { me.attr('selected', true) });
-        }
-
         var filterReviewers = function() {
             $('select.reviewer')
                 .children()
@@ -142,6 +135,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 .not(':contains(Michael Russel)')
                 .not(':contains(Ray Hidayat)')
                 .not(':contains(Tino Koschinski)')
+                .not(':contains(Lukas Pohl)')
+                .not(':contains(Simon Frost)')
                 .remove()
         }
 
@@ -186,7 +181,8 @@ window.addEventListener('DOMContentLoaded', function() {
                         var td = span.parent().parent().parent();
                         td.css({textAlign: 'center'});
                         span.attr({title: priority}).css({fontWeight: 'bold', textAlign: 'center'});
-                        if      (priority.match(/1[^\d]*/)) { span.text('1').css( { color: '#e61717' } ); }
+                        if      (priority.match(/\d\d+/))   { span.text('*').css( { color: '#177ce6' } ); }
+                        else if (priority.match(/1[^\d]*/)) { span.text('1').css( { color: '#e61717' } ); }
                         else if (priority.match(/2[^\d]*/)) { span.text('2').css( { color: '#e66717' } ); }
                         else if (priority.match(/3[^\d]*/)) { span.text('3').css( { color: '#e6b817' } ); }
                         else if (priority.match(/4[^\d]*/)) { span.text('4').css( { color: '#c3e617' } ); }
@@ -195,7 +191,6 @@ window.addEventListener('DOMContentLoaded', function() {
                         else if (priority.match(/7[^\d]*/)) { span.text('7').css( { color: '#17e65d' } ); }
                         else if (priority.match(/8[^\d]*/)) { span.text('8').css( { color: '#17e6ae' } ); }
                         else if (priority.match(/9[^\d]*/)) { span.text('9').css( { color: '#17cde6' } ); }
-                        else if (priority.match(/\d+/))     { span.text('*').css( { color: '#177ce6' } ); }
                     } else {
                         var a = $(e).find('a:first');
                         a.html('&nbsp;!').css({textAlign: 'center'});
@@ -214,7 +209,8 @@ window.addEventListener('DOMContentLoaded', function() {
                         var td = link.parent().parent().parent().parent().parent().parent();
                         td.css({textAlign: 'center'});
                         link.attr({title: backlog}).css({fontWeight: 'bold', textAlign: 'center'});
-                        if      (backlog.match(/1[^\d]*/)) { link.text('1').css( { color: '#e61717' } ); }
+                        if      (backlog.match(/\d\d+/))   { link.text('*').css( { color: '#177ce6' } ); }
+                        else if (backlog.match(/1[^\d]*/)) { link.text('1').css( { color: '#e61717' } ); }
                         else if (backlog.match(/2[^\d]*/)) { link.text('2').css( { color: '#e66717' } ); }
                         else if (backlog.match(/3[^\d]*/)) { link.text('3').css( { color: '#e6b817' } ); }
                         else if (backlog.match(/4[^\d]*/)) { link.text('4').css( { color: '#c3e617' } ); }
@@ -223,10 +219,9 @@ window.addEventListener('DOMContentLoaded', function() {
                         else if (backlog.match(/7[^\d]*/)) { link.text('7').css( { color: '#17e65d' } ); }
                         else if (backlog.match(/8[^\d]*/)) { link.text('8').css( { color: '#17e6ae' } ); }
                         else if (backlog.match(/9[^\d]*/)) { link.text('9').css( { color: '#17cde6' } ); }
-                        else if (backlog.match(/\d+/))     { link.text('*').css( { color: '#177ce6' } ); }
                     } else {
                         var a = $(e).find('a:first');
-                        a.html('&nbsp;&#x203D;').css({textAlign: 'center'});
+                        a.html('&#x203D;').css({textAlign: 'center'});
                     }
                 });
             }
@@ -268,6 +263,24 @@ window.addEventListener('DOMContentLoaded', function() {
             resolveInTestButton.insertBefore(resolveButton);
         }
 
+        var insertCodeReviewButton = function() {
+            var editButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li:has("a.edit")');
+            var path = editButton.children('a.edit').attr('href');
+            var category = $('.catIcon').attr('title');
+            var statusCode = 0;
+            if      (category == undefined)     { return;          }
+            else if (category.match(/Feature/)) { statusCode = 31; }
+            else if (category.match(/Bug/))     { statusCode = 30; }
+            else                                { return;          }
+            var codeReviewButton = $('<li>' +
+                                         '<a class="actionButton2 code-review" href="' + path + '&ixStatus=' + statusCode + '">' +
+                                             'Code Review' +
+                                         '</a>' +
+                                     '</li>');
+
+            codeReviewButton.insertBefore(editButton);
+        }
+
         var forceResolveStatuses = function() {
             var resolveButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li a.resolve');
             var category = $('.catIcon').attr('title');
@@ -279,12 +292,27 @@ window.addEventListener('DOMContentLoaded', function() {
             resolveButton.attr('href', resolveButton.attr('href') + '&ixStatus=' + statusCode);
         }
 
+        var removeBacklogArrows = function() {
+            $('span.projectBacklogArrows').hide();
+        }
+
+        var insertAssignToMeButton = function() {
+            var assignButton = $('#bugviewContainer .buttonbar ul.toolbar.buttons li:has("a.assign")');
+            var path = assignButton.children('a.assign').attr('href');
+            var assignToMeButton = $('<li>' +
+                                         '<a class="actionButton2 assign-to-me" href="' + path + '&ixPersonAssignedTo=' + MY_ID + '">' +
+                                             'Assign to me' +
+                                         '</a>' +
+                                     '</li>');
+
+            assignToMeButton.insertBefore(assignButton);
+        }
+
         $.fn.reverse = [].reverse;
 
         injectCSS('colours.css');
         addFiltersToBanner();
         highlightMe();
-        addMeButton();
         window.addEventListener('DOMNodeInserted', filterReviewers, false);
         colouriseStatusCol();
         colourisePriorityCol();
@@ -295,6 +323,9 @@ window.addEventListener('DOMContentLoaded', function() {
         swapWatch();
         insertResolveInTestButton();
         forceResolveStatuses();
+        removeBacklogArrows();
+        insertAssignToMeButton();
+        insertCodeReviewButton();
         insertLogo();
 
         window.opera.postError("FogBugz improved");

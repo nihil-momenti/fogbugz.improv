@@ -36,17 +36,17 @@ td.wysSymbol
 
 .flat-left-arrow-black
 {
-    border-right-color:#000;
+    border-right-color:#2aa198;
 }
 
 .flat-right-arrow-black
 {
-    border-left-color:#000;
+    border-left-color:#268bd2;
 }
 
 .flat-down-arrow-black
 {
-    border-top-color:#000;
+    border-top-color:#dc322f;
     margin-bottom:1px;
 }
 
@@ -368,9 +368,12 @@ a.uvd:visited
 
 .bugList .bugs th
 {
-    border-right-color:#BBB;
+    /*border-right-color:#BBB;
     border-bottom-color:#BBB;
-    border-top-color:#DDD;
+    border-top-color:#DDD;*/
+    border-right-color:#93a1a1;
+    border-bottom-color:#93a1a1;
+    border-top-color:#073642;
 }
 
 #mainArea .bugList .bugs .newCase th,
@@ -388,7 +391,7 @@ a.uvd:visited
 .biglist td.L
 {
     /*border-left-color:#d6d6d6;*/
-    border-left-color:#586e75;
+    border-left-color:#073642;
 }
 
 .biglist th.R,
@@ -533,11 +536,27 @@ td.emptyActionButtons
     border-top-color:#073642;
 }
 
+/* Top level cases */
+.g-r:not(.n-b) td,
+.g-r-a:not(.n-b) td
+{
+    border-top-width:9px;
+}
+
+/* Second level cases */
+/*.g-r[depth="2"] + .g-r[depth="1"] td,
+.g-r[depth="2"] + .g-r-a[depth="1"] td,
+.g-r-a[depth="2"] + .g-r[depth="1"] td,
+.g-r-a[depth="2"] + .g-r-a[depth="1"] td
+{
+    border-top-width:5px;
+}*/
+
 td.g-r-left,
 .g-r-pending td
 {
     /*border-left-color:#d6d6d6;*/
-    border-left-color:#586e75;
+    border-left-color:#073642;
 }
 
 .g-r-pending td
@@ -572,7 +591,7 @@ td.g-r-left,
 #r-s
 {
     /*border-right-color:#d6d6d6;*/
-    border-right-color:#586e75;
+    border-right-color:#073642;
 }
 
 span.status
@@ -2044,7 +2063,7 @@ body,
     border-right-color: rgb(204, 204, 204);
     border-top-color: rgb(204, 204, 204);
     box-shadow: inset 1px 1px rgb(255, 255, 255);
-    background-color:#859900;
+    /*background-color:#859900;*/
 }
 
 
